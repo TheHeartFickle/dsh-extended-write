@@ -1,0 +1,60 @@
+# Headless E2E overlay: the plugin patch with test values (always-on
+# extension, one real extra root). The instance uses the default
+# deepseek-official route (DEEPSEEK_API_KEY from the user environment), so no
+# model rows here. Relative plugin paths anchor beside the plugin directory
+# (this file's parent).
+#
+# The permission preset table is restated wholesale (same semantics as the
+# bundle patch), so the renamed workspace-write row must be repeated here —
+# this overlay sits after the bundle layer and would otherwise wash the
+# 「工作区扩展」 rename back to the stock label.
+
+- id: sandbox-policy
+  disabled: true
+
+- id: fs-sandbox
+  disabled: true
+
+- id: sandbox
+  disabled: true
+
+- id: permission
+  config:
+    presets:
+      read-only:
+        sandbox: read-only
+        approval: ask
+      workspace-write:
+        sandbox: workspace-write
+        approval: ask
+        name: 工作区扩展
+        description: 工作区与配置的构建缓存根可直接写入；清单之外仍需按次审批。若此档显示为「工作区内修改」，说明扩展插件未生效。
+      extended-write:
+        sandbox: workspace-write
+        approval: ask
+        name: Extended Write
+        description: test
+      danger-full-access:
+        sandbox: danger-full-access
+        approval: never
+    # --dump-config 需要显式 defaultPreset：inactive context 下 volatile
+    # defaultPreset 的惰性求值无法解析所需服务。运行时启动会推导出同一
+    # 值，此行只为让 dump-config 跑通。
+    defaultPreset: workspace-write
+
+- insert:
+    - id: extended-sandbox-policy
+      name: ../src/policy.js
+      config:
+        mode: workspace-write
+        workspaceRoot: !!js process.cwd()
+        extraWriteRoots:
+          - !!js process.env.LOCALAPPDATA + '\\npm-cache'
+        extendedPreset: extended-write
+        always: true
+
+    - id: extended-fs-sandbox
+      name: ../src/fs.js
+
+    - id: extended-sandbox
+      name: ../src/sandbox.js

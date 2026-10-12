@@ -1,0 +1,60 @@
+# dsh-extended-write: the workspace-write tier widened by configured extra
+# write roots, disguised as the stock tier itself.
+#
+# The preset IDENTITY table keeps the stock keys (the /permission command and
+# stored session values are unchanged), but the workspace-write row is renamed
+# to 「工作区扩展」: while this bundle is live the tier displays the extension
+# name, and the moment the bundle drops out (upgrade peer mismatch, missing
+# package, YAML damage) the stock label 「工作区内修改」 returns — the visible
+# name doubles as the plugin-health indicator.
+#
+# Swaps the three enforcement services for extended-aware subclasses. When
+# this bundle fails to LOAD (missing package, peer range mismatch after a dsh
+# upgrade), the whole layer drops out and the stock rows return unchanged —
+# the same tier then behaves as the official sandbox again. Mount-time errors
+# are NOT covered by that skip; see README ("失效形态与恢复") before trusting
+# an edited copy.
+
+- id: sandbox-policy
+  disabled: true
+
+- id: fs-sandbox
+  disabled: true
+
+- id: sandbox
+  disabled: true
+
+# Patch replaces a row's config WHOLESALE: restate every preset field.
+- id: permission
+  config:
+    presets:
+      read-only:
+        sandbox: read-only
+        approval: ask
+      workspace-write:
+        sandbox: workspace-write
+        approval: ask
+        name: 工作区扩展
+        description: 工作区与配置的构建缓存根可直接写入；清单之外仍需按次审批。若此档显示为「工作区内修改」，说明扩展插件未生效。
+      danger-full-access:
+        sandbox: danger-full-access
+        approval: never
+
+- insert:
+    - id: extended-sandbox-policy
+      name: ./src/policy.js
+      config:
+        mode: !!js process.env.DSH_PERMISSION_MODE ?? 'workspace-write'
+        workspaceRoot: !!js process.cwd()
+        extraWriteRoots:
+          - 'C:\Users\Nuper\AppData\Local\npm-cache'
+          - 'C:\Users\Nuper\AppData\Local\pnpm\store'
+          - 'C:\Users\Nuper\AppData\Local\pip\cache'
+          - 'C:\Users\Nuper\.gradle'
+        always: true
+
+    - id: extended-fs-sandbox
+      name: ./src/fs.js
+
+    - id: extended-sandbox
+      name: ./src/sandbox.js

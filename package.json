@@ -1,0 +1,62 @@
+{
+  "name": "@the-heart-fickle/dsh-extended-write",
+  "version": "0.3.0",
+  "description": "DSH permission plugin: the workspace-write tier widened by configured extra write roots (build caches), disguised as the stock tier. On plugin failure the same tier degrades to the official sandbox.",
+  "type": "module",
+  "exports": {
+    "./policy": "./src/policy.js",
+    "./fs": "./src/fs.js",
+    "./sandbox": "./src/sandbox.js",
+    "./runner": "./src/runner.js",
+    "./locale/*.json": "./locale/*.json",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src/policy.js",
+    "src/fs.js",
+    "src/sandbox.js",
+    "src/runner.js",
+    "cordis.patch.yml",
+    "locale/en.json",
+    "locale/zh.json",
+    "README.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "dependencies": {
+    "@deepseek-ai/dsh-fs": "0.2.1-alpha.1",
+    "@deepseek-ai/dsh-fs-sandbox": "0.2.1-alpha.1",
+    "@deepseek-ai/dsh-sandbox": "0.2.1-alpha.1",
+    "@deepseek-ai/dsh-sandbox-local": "0.2.1-alpha.1",
+    "@deepseek-ai/dsh-sandbox-policy": "0.2.1-alpha.1",
+    "@deepseek-ai/dsh-sandbox-windows-acl": "0.2.1-alpha.1",
+    "@deepseek-ai/dsh-subprocess": "0.2.1-alpha.1",
+    "@deepseek-ai/dsh-win32-process": "0.2.1-alpha.1",
+    "@deepseek-ai/node-addon-system": "0.1.2",
+    "@deepseek-ai/schemastery": "3.18.5-alpha.1",
+    "koffi": "3.1.1"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/dsh-fs": "0.2.1-alpha.1",
+    "@deepseek-ai/dsh-fs-sandbox": "0.2.1-alpha.1",
+    "@deepseek-ai/dsh-sandbox": "0.2.1-alpha.1",
+    "@deepseek-ai/dsh-sandbox-local": "0.2.1-alpha.1",
+    "@deepseek-ai/dsh-sandbox-policy": "0.2.1-alpha.1",
+    "@deepseek-ai/dsh-sandbox-windows-acl": "0.2.1-alpha.1",
+    "@deepseek-ai/dsh-subprocess": "0.2.1-alpha.1",
+    "@deepseek-ai/dsh-win32-process": "0.2.1-alpha.1"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "koffi"
+    ]
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT",
+  "private": true
+}

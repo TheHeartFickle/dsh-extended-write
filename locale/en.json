@@ -1,0 +1,6 @@
+{
+	"meta": {
+		"title": "Extended Write",
+		"description": "Widens the workspace-write tier with configured extra write roots (build caches). When the plugin fails, the same tier degrades to the stock sandbox."
+	}
+}
