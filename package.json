@@ -9,6 +9,7 @@
     "./sandbox": "./src/sandbox.js",
     "./runner": "./src/runner.js",
     "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
     "./package.json": "./package.json"
   },
   "files": [
@@ -19,6 +20,7 @@
     "cordis.patch.yml",
     "locale/en.json",
     "locale/zh.json",
+    "icon.svg",
     "README.md"
   ],
   "dsh": {
